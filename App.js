@@ -6,26 +6,32 @@ import RecentExpensesScreen from './screens/RecentExpensesScreen';
 import AllExpensesScreen from './screens/AllExpensesScreen';
 import Icon from 'react-native-vector-icons/Ionicons'; 
 import { useState } from 'react';
+import { Provider, useDispatch } from 'react-redux';
+import { store } from './store/store';
+import { addExpense } from './store/ExpenseSlice';
 
 export default function App() {
-  const [expenseItem,setExpenseItem] = useState({
-    category : "Household",
-    description : "Rent",
-    date : "22-10-25",
-    amount : 4000,
-  });
   const Tab = createBottomTabNavigator();
+  const dispatch = useDispatch();
+  const expenseData = {
+   title : 'hello',
+   amount : 23,
+   category : "jj",
+    date : "dd"
+  };
   return (
+    <Provider store={store}>
     <NavigationContainer>
        <Tab.Navigator screenOptions={
         {
-          headerRight : () => <Icon name="add" size={30}/>
+          headerRight : () => <Icon name="add" size={30} onPress={dispatch(addExpense(expenseData))}/>
         }
        }>
         <Tab.Screen name="Recent expenses" component={RecentExpensesScreen} options={{tabBarIcon : ({color, size}) => <Icon name="hourglass" size={size} color={color}/> }}/>
         <Tab.Screen name="All expenses" component={AllExpensesScreen} options={{tabBarIcon : ({color, size}) => <Icon name="calendar" size={size} color={color}/> }}/>
        </Tab.Navigator>
     </NavigationContainer>
+    </Provider>
   );
 }
 
